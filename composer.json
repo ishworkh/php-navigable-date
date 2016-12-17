@@ -1,0 +1,13 @@
+{
+  "name": "ishworkh/date",
+  "type": "library",
+  "description": "Wrapper around php DateTime class",
+  "autoload": {
+    "psr-4": {
+      "NavigableDate\\": "Source/"
+    }
+  },
+  "require":{
+    "php": ">=5.2.0"
+  }
+}
