@@ -9,7 +9,7 @@ It provides basic core ```DateTime``` methods, which are ```format```, ```getTim
 ## Basic Usage
 
 Can be instantiated with normal new operator but that needs to be provided with required dependencies, 
-which are available through ```NavigableDate\NavigableDateLocator```. However, for ease ```NavigableDateLocator``
+which are available through ```NavigableDate\NavigableDateLocator```. However, for ease ```NavigableDateLocator```
 can be used like,
  
  ``` php
