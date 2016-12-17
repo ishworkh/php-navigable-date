@@ -1,14 +1,8 @@
 # (PHP) NavigableDate
 
-NavigableDate is a well tested wrapper around core php ```DateTime``` class, 
-which provides an interface to navigate through the date, like nextDay, previousDay, nextMonth etc.
-Along with those navigating methods, it provides common methods that core ```DateTime``` provides  
-1. getTimestamp
-2. getTimeZone
-3. getOffset
-4. format
-##### For more details about methods, look into ```NavigableDate\NavigableDateInterface`` 
-
+NavigableDate is a wrapper around core php ```DateTime``` class.
+It provides an interface to navigate through the dates for e.g. nextDay, previousDay, nextMonth etc.
+It provides basic core ```DateTime``` methods as well.  
 
 ## Basic Usage
 
@@ -18,24 +12,45 @@ can be used like,
  
  ``` php
     
-    $NavigableDate = NavigableDate\NavigableDateLocator::getInstance()->getNavigableDateFactory()->create('2016-07-11');
+    $NavigableDate = NavigableDate\NavigableDateLocator::getInstance()`
+                    ->getNavigableDateFactory()
+                    ->create('2016-07-11');
     
     or 
     
-    $NavigableDate = NavigableDate\NavigableDateLocator::getInstance()->getNavigableDateFactory()->createFromDateTime(new DateTime());
+    $NavigableDate = NavigableDate\NavigableDateLocator::getInstance()
+                    ->getNavigableDateFactory()
+                    ->createFromDateTime(new DateTime());
     
  ```
  
  In order to avoid to write long words for locator, ```NavigableDate\NavigableDateFacade``` is also available which facilitates instantiation as shown above, 
  just escapsulated in respective facade methods.   
  
+ ```
+    $NavigableDate = NavigableDate\NavigableDateFacade::create('2016-07-11');
+ 
+ ```
+ 
  ## Then,
  
  ```
     $NextDay = $NavigableDate->nextDay();
-    $NextNextDay = $NextDay->nextDay(); // likewise
+    $NextNextDay = $NextDay->nextDay(); 
+    $NextNextDay->nextMonth();
+    
+    $resetTime = true;
+    $resetDays = true;
+    $resetMonths = true;
+    
+    $NextDay->previousYear($resetTime, $resetDays, $resetMonths);
+    
+    // $resetTime -> resets time to 00:00:00
+    // $resetDays -> resets day of the month to 01
+    // $resetMonths -> resets month of the year to 01
+    
  ```
  
  ## Also possible to do previousMonth, nextYear with possibility to reset time, days or months available in corresponding methods. 
  
- # For more details, look into ```NavigableDate\NavigableDateInterface```
+ #### NOTE: For more details, look into ```NavigableDate\NavigableDateInterface```
