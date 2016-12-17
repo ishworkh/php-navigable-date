@@ -1,13 +1,35 @@
 {
-  "name": "ishworkh/date",
+  "name": "ishworkh/navigable-date",
   "type": "library",
   "description": "Wrapper around php DateTime class",
+  "keywords": [
+    "wrapper",
+    "date",
+    "datetime",
+    "navigable",
+    "nextDay",
+    "previousDay",
+    "nextMonth",
+    "previousMonth",
+    "nextYear",
+    "previousYear"
+  ],
+  "authors": [
+    {
+      "name": "Ishwor Khadka",
+      "email": "ishworkh@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/ishworkh/php-navigable-date/issues"
+  },
   "autoload": {
     "psr-4": {
       "NavigableDate\\": "Source/"
     }
   },
-  "require":{
+  "require": {
     "php": ">=5.2.0"
   }
 }
