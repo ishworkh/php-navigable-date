@@ -14,7 +14,7 @@ can be used like,
  
  ``` php
     
-    $NavigableDate = NavigableDate\NavigableDateLocator::getInstance()`
+    $NavigableDate = NavigableDate\NavigableDateLocator::getInstance()
                     ->getNavigableDateFactory()
                     ->create('2016-07-11');
     
