@@ -1,8 +1,10 @@
 # (PHP) NavigableDate
 
 NavigableDate is a wrapper around core php ```DateTime``` class.
-It provides an interface to navigate through the dates for e.g. nextDay, previousDay, nextMonth etc.
-It provides basic core ```DateTime``` methods as well.  
+It encapsulates core class to expose ```NavigableDateInterface``` that provides ways to 
+navigate through the dates for e.g. nextDay, previousDay, nextMonth etc.
+It provides basic core ```DateTime``` methods, which are ```format```, ```getTimestamp```,
+```getOffset``` and ```getTimezone``` to be specific.
 
 ## Basic Usage
 
@@ -36,6 +38,12 @@ can be used like,
  
  ```
     $NextDay = $NavigableDate->nextDay();
+    
+    $NextDay->getTimestamp();
+    $NextDay->getOffset();
+    $NextDay->getTimeZone();
+    $NextDay->format('Y-m-d');
+    
     $NextNextDay = $NextDay->nextDay(); 
     $NextNextDay->nextMonth();
     
