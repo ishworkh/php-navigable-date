@@ -1,16 +1,14 @@
 # (PHP) NavigableDate
 
 NavigableDate is a wrapper around core php ```DateTime``` class.
-It encapsulates core class to expose ```NavigableDateInterface``` that provides ways to 
-navigate through the dates for e.g. nextDay, previousDay, nextMonth etc.
-It provides basic core ```DateTime``` methods, which are ```format```, ```getTimestamp```,
-```getOffset``` and ```getTimezone``` to be specific.
+It encapsulates core class and exposes ```NavigableDateInterface``` that provides ways to 
+navigate through the dates for e.g. nextDay, previousDay, nextMonth etc in addition to basic core ```DateTime``` methods like  ```format```, ```getTimestamp```,
+```getOffset``` and ```getTimezone```.
 
 ## Basic Usage
 
-Can be instantiated with normal new operator but that needs to be provided with required dependencies, 
-which are available through ```NavigableDate\NavigableDateLocator```. However, for ease ```NavigableDateLocator```
-can be used like,
+It can be instantiated with normal new operator but that needs you to manually handle the required dependencies. For which the dependencies 
+are available from ```NavigableDate\NavigableDateLocator```. However for ease ```NavigableDateLocator``` can be used to get NavigableDateFactory.
  
  ``` php
     
@@ -26,13 +24,16 @@ can be used like,
     
  ```
  
- In order to avoid to write long words for locator, ```NavigableDate\NavigableDateFacade``` is also available which facilitates instantiation as shown above, 
- just escapsulated in respective facade methods.   
+ To make it easier, ```NavigableDate\NavigableDateFacade``` is also available which facilitates instantiation.
  
  ```
     $NavigableDate = NavigableDate\NavigableDateFacade::create('2016-07-11');
  
  ```
+ 
+ It includes ```NavigableDate\NavigableDateServiceProvider``` to integrate this library to Laravel application. Just include this provider in the lists
+ of service providers. After which  type hinting ```NavigableDate\NavigableDateFactory``` will resolve into respective factory class responsible for creating 
+ new instance of ```NavigableDate\NavigableDate```.
  
  ## Then,
  
