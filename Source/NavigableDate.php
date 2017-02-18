@@ -4,24 +4,25 @@
  * @created 2016-12-14
  */
 
+declare(strict_types = 1);
+
 namespace NavigableDate;
 
 use DateInterval;
 use DateTime;
 use DateTimeZone;
-use Test\NavigableDateTest;
 
 /**
  * @author Ishwor Khadka <ishworkh@gmail.com>
- * @see    NavigableDateTest
- * @see    NavigableDateTest
+ * @see    \Unittest\NavigableDateTest
+ * @see    \Test\NavigableDateTest
  */
 class NavigableDate implements NavigableDateInterface
 {
-    const
-        DATE_FORMAT_YEAR = 'Y',
-        DATE_FORMAT_MONTH = 'm',
-        DATE_FORMAT_DAY = 'd';
+    private const
+        _DATE_FORMAT_YEAR = 'Y',
+        _DATE_FORMAT_MONTH = 'm',
+        _DATE_FORMAT_DAY = 'd';
 
     /**
      * @var DateTime
@@ -46,10 +47,10 @@ class NavigableDate implements NavigableDateInterface
     /**
      * NavigableDate constructor.
      *
-     * @param DateTime             $DateTime
-     * @param DateIntervalFactory  $DateIntervalFactory
+     * @param DateTime $DateTime
+     * @param DateIntervalFactory $DateIntervalFactory
      * @param NavigableDateFactory $NavigableDateFactory
-     * @param DateTimeFactory      $DateTimeFactory
+     * @param DateTimeFactory $DateTimeFactory
      */
     public function __construct(
         DateTime $DateTime,
@@ -58,10 +59,10 @@ class NavigableDate implements NavigableDateInterface
         DateTimeFactory $DateTimeFactory
     )
     {
-        $this->_DateTime             = $DateTime;
-        $this->_DateIntervalFactory  = $DateIntervalFactory;
+        $this->_DateTime = $DateTime;
+        $this->_DateIntervalFactory = $DateIntervalFactory;
         $this->_NavigableDateFactory = $NavigableDateFactory;
-        $this->_DateTimeFactory      = $DateTimeFactory;
+        $this->_DateTimeFactory = $DateTimeFactory;
     }
 
     /**
@@ -70,7 +71,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function nextDay($resetTime = false)
+    public function nextDay(bool $resetTime = false):NavigableDateInterface
     {
         $DateTime = $this
             ->_cloneDateTime($this->_DateTime);
@@ -89,7 +90,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function previousDay($resetTime = false)
+    public function previousDay(bool $resetTime = false):NavigableDateInterface
     {
         $DateTime = $this
             ->_cloneDateTime($this->_DateTime);
@@ -108,7 +109,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function nextMonth($resetTime = false, $resetDays = false)
+    public function nextMonth(bool $resetTime = false, bool $resetDays = false):NavigableDateInterface
     {
         $DateTime = $this
             ->_cloneDateTime($this->_DateTime);
@@ -126,7 +127,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function previousMonth($resetTime = false, $resetDays = false)
+    public function previousMonth(bool $resetTime = false, bool $resetDays = false):NavigableDateInterface
     {
         $DateTime = $this
             ->_cloneDateTime($this->_DateTime);
@@ -146,7 +147,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function nextYear($resetTime = false, $resetDays = false, $resetMonths = false)
+    public function nextYear(bool $resetTime = false, bool $resetDays = false, bool $resetMonths = false):NavigableDateInterface
     {
         $DateTime = $this
             ->_cloneDateTime($this->_DateTime);
@@ -166,7 +167,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function previousYear($resetTime = false, $resetDays = false, $resetMonths = false)
+    public function previousYear(bool $resetTime = false, bool $resetDays = false, bool $resetMonths = false):NavigableDateInterface
     {
         $DateTime = $this
             ->_cloneDateTime($this->_DateTime);
@@ -180,7 +181,7 @@ class NavigableDate implements NavigableDateInterface
     }
 
     /**
-     * @param int  $days
+     * @param int $days
      * -{$days} means before
      *
      * @param bool $resetTime
@@ -188,11 +189,12 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function dateAfter($days, $resetTime = false)
+    public function dateAfter(int $days, bool $resetTime = false):NavigableDateInterface
     {
-        $DateTime     = $this
+        $DateTime = $this
             ->_cloneDateTime($this->_DateTime);
-        $DateInterval = $this->_createDateInterval(abs($days), 0, 0);
+        $absoluteDaysCount = (int)abs($days);
+        $DateInterval = $this->_createDateInterval($absoluteDaysCount, 0, 0);
         if ($days < 0) {
             $DateTime->sub($DateInterval);
         } elseif ($days > 0) {
@@ -209,7 +211,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return string
      */
-    public function format($formatSpec)
+    public function format(string $formatSpec):string
     {
         return $this->_DateTime->format($formatSpec);
     }
@@ -217,7 +219,7 @@ class NavigableDate implements NavigableDateInterface
     /**
      * @return int
      */
-    public function getTimestamp()
+    public function getTimestamp():int
     {
         return $this->_DateTime->getTimestamp();
     }
@@ -225,7 +227,7 @@ class NavigableDate implements NavigableDateInterface
     /**
      * @return DateTimeZone
      */
-    public function getTimezone()
+    public function getTimezone():DateTimeZone
     {
         return $this->_DateTime->getTimezone();
     }
@@ -233,7 +235,7 @@ class NavigableDate implements NavigableDateInterface
     /**
      * @return int
      */
-    public function getOffset()
+    public function getOffset():int
     {
         return $this->_DateTime->getOffset();
     }
@@ -241,7 +243,7 @@ class NavigableDate implements NavigableDateInterface
     /**
      * @return DateInterval
      */
-    private function _createOneDayInterval()
+    private function _createOneDayInterval():DateInterval
     {
         return $this->_createDateInterval(1, 0, 0);
     }
@@ -249,7 +251,7 @@ class NavigableDate implements NavigableDateInterface
     /**
      * @return DateInterval
      */
-    private function _createOneMonthInterval()
+    private function _createOneMonthInterval():DateInterval
     {
         return $this->_createDateInterval(0, 1, 0);
     }
@@ -257,20 +259,20 @@ class NavigableDate implements NavigableDateInterface
     /**
      * @return DateInterval
      */
-    private function _createOneYearInterval()
+    private function _createOneYearInterval():DateInterval
     {
         return $this->_createDateInterval(0, 0, 1);
     }
 
     /**
      * @param DateTime $DateTime
-     * @param bool     $resetTime
-     * @param bool     $resetDays
-     * @param bool     $resetMonths
+     * @param bool $resetTime
+     * @param bool $resetDays
+     * @param bool $resetMonths
      *
      * @return void
      */
-    private function _handleResets(DateTime $DateTime, $resetTime = false, $resetDays = false, $resetMonths = false)
+    private function _handleResets(DateTime $DateTime, bool $resetTime = false, bool $resetDays = false, bool $resetMonths = false):void
     {
         if ($resetTime) {
             $DateTime->setTime(0, 0, 0);
@@ -290,33 +292,33 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return int
      */
-    private function _getYear(DateTime $DateTime)
+    private function _getYear(DateTime $DateTime):int
     {
-        return (int)$DateTime->format(self::DATE_FORMAT_YEAR);
+        return (int)$DateTime->format(self::_DATE_FORMAT_YEAR);
     }
 
     /**
      * @param DateTime $DateTime
-     * @param bool     $resetMonths
+     * @param bool $resetMonths
      *
      * @return int
      */
-    private function _getMonth(DateTime $DateTime, $resetMonths)
+    private function _getMonth(DateTime $DateTime, bool $resetMonths):int
     {
-        $month = (int)$DateTime->format(self::DATE_FORMAT_MONTH);
+        $month = (int)$DateTime->format(self::_DATE_FORMAT_MONTH);
 
         return $resetMonths ? 1 : $month;
     }
 
     /**
      * @param DateTime $DateTime
-     * @param  bool    $resetDays
+     * @param  bool $resetDays
      *
      * @return int
      */
-    private function _getDay(DateTime $DateTime, $resetDays)
+    private function _getDay(DateTime $DateTime, bool $resetDays):int
     {
-        $day = (int)$DateTime->format(self::DATE_FORMAT_DAY);
+        $day = (int)$DateTime->format(self::_DATE_FORMAT_DAY);
 
         return $resetDays ? 1 : $day;
     }
@@ -326,7 +328,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return DateTime
      */
-    private function _cloneDateTime(DateTime $DateTime)
+    private function _cloneDateTime(DateTime $DateTime):DateTime
     {
         return $this->_DateTimeFactory->createFromDateTime($DateTime);
     }
@@ -335,10 +337,9 @@ class NavigableDate implements NavigableDateInterface
      * @param int $days
      * @param int $months
      * @param int $years
-     *
      * @return DateInterval
      */
-    private function _createDateInterval($days, $months, $years)
+    private function _createDateInterval(int $days, int $months, int $years):DateInterval
     {
         return $this->_DateIntervalFactory->create($days, $months, $years);
     }
@@ -348,7 +349,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDate
      */
-    private function _createSelf(DateTime $DateTime)
+    private function _createSelf(DateTime $DateTime):NavigableDate
     {
         return $this->_NavigableDateFactory->createFromDateTime($DateTime);
     }

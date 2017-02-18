@@ -4,6 +4,8 @@
  * @created 2016-12-14
  */
 
+declare(strict_types = 1);
+
 namespace Unittest;
 
 use NavigableDate\DateIntervalFactory;
@@ -25,9 +27,9 @@ class DateIntervalFactoryTest extends BaseUnittest
      *
      * @dataProvider dateIntervalDateProvider
      */
-    public function testCreate($days, $months, $years)
+    public function testCreate(int $days, int $months, int $years)
     {
-        $Factory      = new DateIntervalFactory();
+        $Factory = new DateIntervalFactory();
         $DateInterval = $Factory->create($days, $months, $years);
 
         self::assertEquals($days, $DateInterval->d);
@@ -38,7 +40,7 @@ class DateIntervalFactoryTest extends BaseUnittest
     /**
      * @return array
      */
-    public function dateIntervalDateProvider()
+    public function dateIntervalDateProvider():array
     {
         return [
             [

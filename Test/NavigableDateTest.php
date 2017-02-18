@@ -4,6 +4,8 @@
  * @created 2016-12-15
  */
 
+declare(strict_types = 1);
+
 namespace Test;
 
 use DateTime;
@@ -21,13 +23,13 @@ class NavigableDateTest extends BaseTest
     /**
      * @param string $date
      * @param string $expectedNextDayDate
-     * @param bool   $resetTime
+     * @param bool $resetTime
      *
      * @return void
      *
      * @dataProvider nextDayDataProvider
      */
-    public function testNextDay($date, $expectedNextDayDate, $resetTime)
+    public function testNextDay(string $date, string $expectedNextDayDate, bool $resetTime)
     {
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
 
@@ -37,7 +39,7 @@ class NavigableDateTest extends BaseTest
     /**
      * @return array
      */
-    public function nextDayDataProvider()
+    public function nextDayDataProvider():array
     {
         return [
             [
@@ -58,13 +60,13 @@ class NavigableDateTest extends BaseTest
     /**
      * @param string $date
      * @param string $expectedPreviousDayDate
-     * @param bool   $resetTime
+     * @param bool $resetTime
      *
      * @return void
      *
      * @dataProvider previousDayDataProvider
      */
-    public function testPreviousDay($date, $expectedPreviousDayDate, $resetTime)
+    public function testPreviousDay(string $date, string $expectedPreviousDayDate, bool $resetTime)
     {
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
 
@@ -74,7 +76,7 @@ class NavigableDateTest extends BaseTest
     /**
      * @return array
      */
-    public function previousDayDataProvider()
+    public function previousDayDataProvider():array
     {
         return [
             [
@@ -95,14 +97,14 @@ class NavigableDateTest extends BaseTest
     /**
      * @param string $date
      * @param string $expectedNextMonthDate
-     * @param bool   $resetTime
-     * @param bool   $resetDays
+     * @param bool $resetTime
+     * @param bool $resetDays
      *
      * @return void
      *
      * @dataProvider nextMonthDataProvider
      */
-    public function testNextMonth($date, $expectedNextMonthDate, $resetTime, $resetDays)
+    public function testNextMonth(string $date, string $expectedNextMonthDate, bool $resetTime, bool $resetDays)
     {
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
 
@@ -114,7 +116,7 @@ class NavigableDateTest extends BaseTest
     /**
      * @return array
      */
-    public function nextMonthDataProvider()
+    public function nextMonthDataProvider():array
     {
         return [
             [
@@ -147,14 +149,14 @@ class NavigableDateTest extends BaseTest
     /**
      * @param string $date
      * @param string $expectedPreviousMonthDate
-     * @param bool   $resetTime
-     * @param bool   $resetDays
+     * @param bool $resetTime
+     * @param bool $resetDays
      *
      * @return void
      *
      * @dataProvider nextPreviousDataProvider
      */
-    public function testPreviousMonth($date, $expectedPreviousMonthDate, $resetTime, $resetDays)
+    public function testPreviousMonth(string $date, string $expectedPreviousMonthDate, bool $resetTime, bool $resetDays)
     {
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
 
@@ -166,7 +168,7 @@ class NavigableDateTest extends BaseTest
     /**
      * @return array
      */
-    public function nextPreviousDataProvider()
+    public function nextPreviousDataProvider():array
     {
         return [
             [
@@ -199,15 +201,15 @@ class NavigableDateTest extends BaseTest
     /**
      * @param string $date
      * @param string $expectedNextMonthDate
-     * @param bool   $resetTime
-     * @param bool   $resetDays
-     * @param bool   $resetMonths
+     * @param bool $resetTime
+     * @param bool $resetDays
+     * @param bool $resetMonths
      *
      * @return void
      *
      * @dataProvider nextYearDataProvider
      */
-    public function testNextYear($date, $expectedNextMonthDate, $resetTime, $resetDays, $resetMonths)
+    public function testNextYear(string $date, string $expectedNextMonthDate, bool $resetTime, bool $resetDays, bool $resetMonths)
     {
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
 
@@ -220,7 +222,7 @@ class NavigableDateTest extends BaseTest
     /**
      * @return array
      */
-    public function nextYearDataProvider()
+    public function nextYearDataProvider():array
     {
         return [
             [
@@ -277,15 +279,15 @@ class NavigableDateTest extends BaseTest
     /**
      * @param string $date
      * @param string $expectedNextMonthDate
-     * @param bool   $resetTime
-     * @param bool   $resetDays
-     * @param bool   $resetMonths
+     * @param bool $resetTime
+     * @param bool $resetDays
+     * @param bool $resetMonths
      *
      * @return void
      *
      * @dataProvider previousYearDataProvider
      */
-    public function testPreviousYear($date, $expectedNextMonthDate, $resetTime, $resetDays, $resetMonths)
+    public function testPreviousYear(string $date, string $expectedNextMonthDate, bool $resetTime, bool $resetDays, bool $resetMonths)
     {
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
 
@@ -298,7 +300,7 @@ class NavigableDateTest extends BaseTest
     /**
      * @return array
      */
-    public function previousYearDataProvider()
+    public function previousYearDataProvider():array
     {
         return [
             [
@@ -359,10 +361,10 @@ class NavigableDateTest extends BaseTest
      *
      * @dataProvider formatDataProvider
      */
-    public function testFormat($format)
+    public function testFormat(string $format)
     {
 
-        $DateTime      = new DateTime();
+        $DateTime = new DateTime();
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->createFromDateTime($DateTime);
 
         self::assertSame($DateTime->format($format), $NavigableDate->format($format));
@@ -371,7 +373,7 @@ class NavigableDateTest extends BaseTest
     /**
      * @return array
      */
-    public function formatDataProvider()
+    public function formatDataProvider():array
     {
         return [
             [
@@ -391,7 +393,7 @@ class NavigableDateTest extends BaseTest
 
     public function testGetTimestamp()
     {
-        $DateTime      = new DateTime();
+        $DateTime = new DateTime();
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->createFromDateTime($DateTime);
 
         self::assertSame($DateTime->getTimestamp(), $NavigableDate->getTimestamp());
@@ -399,7 +401,7 @@ class NavigableDateTest extends BaseTest
 
     public function testGetTimeZone()
     {
-        $DateTime      = new DateTime();
+        $DateTime = new DateTime();
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->createFromDateTime($DateTime);
 
         self::assertEquals($DateTime->getTimezone(), $NavigableDate->getTimezone());
@@ -407,7 +409,7 @@ class NavigableDateTest extends BaseTest
 
     public function testGetOffset()
     {
-        $DateTime      = new DateTime();
+        $DateTime = new DateTime();
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->createFromDateTime($DateTime);
 
         self::assertSame($DateTime->getOffset(), $NavigableDate->getOffset());

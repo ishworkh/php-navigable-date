@@ -4,6 +4,8 @@
  * @created 2016-12-14
  */
 
+declare(strict_types = 1);
+
 namespace NavigableDate;
 
 use DateTimeZone;
@@ -19,7 +21,7 @@ interface NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function nextDay($resetTime = false);
+    public function nextDay(bool $resetTime = false):NavigableDateInterface;
 
     /**
      * @param bool $resetTime
@@ -27,7 +29,7 @@ interface NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function previousDay($resetTime = false);
+    public function previousDay(bool $resetTime = false):NavigableDateInterface;
 
     /**
      * @param bool $resetTime
@@ -35,7 +37,7 @@ interface NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function nextMonth($resetTime = false, $resetDays = false);
+    public function nextMonth(bool $resetTime = false, bool $resetDays = false):NavigableDateInterface;
 
     /**
      * @param bool $resetTime
@@ -43,16 +45,7 @@ interface NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function previousMonth($resetTime = false, $resetDays = false);
-
-    /**
-     * @param bool $resetTime
-     * @param bool $resetDays
-     * @param bool $resetMonths
-     *
-     * @return NavigableDateInterface
-     */
-    public function nextYear($resetTime = false, $resetDays = false, $resetMonths = false);
+    public function previousMonth(bool $resetTime = false, bool $resetDays = false):NavigableDateInterface;
 
     /**
      * @param bool $resetTime
@@ -61,10 +54,19 @@ interface NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function previousYear($resetTime = false, $resetDays = false, $resetMonths = false);
+    public function nextYear(bool $resetTime = false, bool $resetDays = false, bool $resetMonths = false):NavigableDateInterface;
 
     /**
-     * @param int  $days
+     * @param bool $resetTime
+     * @param bool $resetDays
+     * @param bool $resetMonths
+     *
+     * @return NavigableDateInterface
+     */
+    public function previousYear(bool $resetTime = false, bool $resetDays = false, bool $resetMonths = false):NavigableDateInterface;
+
+    /**
+     * @param int $days
      * -{$days} means before
      *
      * @param bool $resetTime
@@ -72,27 +74,27 @@ interface NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function dateAfter($days, $resetTime = false);
+    public function dateAfter(int $days, bool $resetTime = false):NavigableDateInterface;
 
     /**
      * @param string $formatSpec
      *
      * @return string
      */
-    public function format($formatSpec);
+    public function format(string $formatSpec):string;
 
     /**
      * @return int
      */
-    public function getTimestamp();
+    public function getTimestamp():int;
 
     /**
      * @return DateTimeZone
      */
-    public function getTimezone();
+    public function getTimezone():DateTimeZone;
 
     /**
      * @return int
      */
-    public function getOffset();
+    public function getOffset():int;
 }

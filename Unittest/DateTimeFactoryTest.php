@@ -4,6 +4,8 @@
  * @created 2016-12-16
  */
 
+declare(strict_types = 1);
+
 namespace Unittest;
 
 require_once __DIR__ . '/BaseUnittest.php';

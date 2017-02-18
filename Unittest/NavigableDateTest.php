@@ -4,6 +4,8 @@
  * @created 2016-12-15
  */
 
+declare(strict_types = 1);
+
 namespace Unittest;
 
 require_once __DIR__ . '/BaseUnittest.php';
@@ -43,11 +45,11 @@ class NavigableDateTest extends BaseUnittest
      *
      * @dataProvider resetTimeBoolDataProvider
      */
-    public function testNextDay($resetTime)
+    public function testNextDay(bool $resetTime)
     {
         $DateTime = $this->_createMockedDateTime();
 
-        $OneDayInterval      = $this->_createMockedDateInterval();
+        $OneDayInterval = $this->_createMockedDateInterval();
         $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
         $DateIntervalFactory->expects(self::once())
             ->method('create')
@@ -93,11 +95,11 @@ class NavigableDateTest extends BaseUnittest
      *
      * @dataProvider resetTimeBoolDataProvider
      */
-    public function testPreviousDay($resetTime)
+    public function testPreviousDay(bool $resetTime)
     {
         $DateTime = $this->_createMockedDateTime();
 
-        $OneDayInterval      = $this->_createMockedDateInterval();
+        $OneDayInterval = $this->_createMockedDateInterval();
         $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
         $DateIntervalFactory->expects(self::once())
             ->method('create')
@@ -144,11 +146,11 @@ class NavigableDateTest extends BaseUnittest
      *
      * @dataProvider resetTimeDaysBoolDataProvider
      */
-    public function testNextMonth($resetTime, $resetDays)
+    public function testNextMonth(bool $resetTime, bool $resetDays)
     {
         $DateTime = $this->_createMockedDateTime();
 
-        $OneMonthInterval    = $this->_createMockedDateInterval();
+        $OneMonthInterval = $this->_createMockedDateInterval();
         $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
         $DateIntervalFactory->expects(self::once())
             ->method('create')
@@ -171,9 +173,9 @@ class NavigableDateTest extends BaseUnittest
             ->with(0, 0, 0);
 
         if ($resetDays) {
-            $expectedYear  = 2016;
+            $expectedYear = 2016;
             $expectedMonth = 7;
-            $expectedDay   = 23;
+            $expectedDay = 23;
 
             $CloneDateTime->expects(self::exactly(3))
                 ->method('format')
@@ -213,11 +215,11 @@ class NavigableDateTest extends BaseUnittest
      *
      * @dataProvider resetTimeDaysBoolDataProvider
      */
-    public function testPreviousMonth($resetTime, $resetDays)
+    public function testPreviousMonth(bool $resetTime, bool $resetDays)
     {
         $DateTime = $this->_createMockedDateTime();
 
-        $OneMonthInterval    = $this->_createMockedDateInterval();
+        $OneMonthInterval = $this->_createMockedDateInterval();
         $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
         $DateIntervalFactory->expects(self::once())
             ->method('create')
@@ -238,9 +240,9 @@ class NavigableDateTest extends BaseUnittest
             ->with(0, 0, 0);
 
         if ($resetDays) {
-            $expectedYear  = 2016;
+            $expectedYear = 2016;
             $expectedMonth = 7;
-            $expectedDay   = 23;
+            $expectedDay = 23;
 
             $CloneDateTime->expects(self::exactly(3))
                 ->method('format')
@@ -281,11 +283,11 @@ class NavigableDateTest extends BaseUnittest
      *
      * @dataProvider resetTimeDaysMonthsBoolDataProvider
      */
-    public function testNextYear($resetTime, $resetDays, $resetMonths)
+    public function testNextYear(bool $resetTime, bool $resetDays, bool $resetMonths)
     {
         $DateTime = $this->_createMockedDateTime();
 
-        $OneYearInterval     = $this->_createMockedDateInterval();
+        $OneYearInterval = $this->_createMockedDateInterval();
         $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
         $DateIntervalFactory->expects(self::once())
             ->method('create')
@@ -306,9 +308,9 @@ class NavigableDateTest extends BaseUnittest
             ->with(0, 0, 0);
 
         if ($resetDays || $resetMonths) {
-            $expectedYear  = 2016;
+            $expectedYear = 2016;
             $expectedMonth = 7;
-            $expectedDay   = 23;
+            $expectedDay = 23;
 
             $CloneDateTime->expects(self::exactly(3))
                 ->method('format')
@@ -353,11 +355,11 @@ class NavigableDateTest extends BaseUnittest
      *
      * @dataProvider resetTimeDaysMonthsBoolDataProvider
      */
-    public function testPreviousYear($resetTime, $resetDays, $resetMonths)
+    public function testPreviousYear(bool $resetTime, bool $resetDays, bool $resetMonths)
     {
         $DateTime = $this->_createMockedDateTime();
 
-        $OneYearInterval     = $this->_createMockedDateInterval();
+        $OneYearInterval = $this->_createMockedDateInterval();
         $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
         $DateIntervalFactory->expects(self::once())
             ->method('create')
@@ -378,9 +380,9 @@ class NavigableDateTest extends BaseUnittest
             ->with(0, 0, 0);
 
         if ($resetDays || $resetMonths) {
-            $expectedYear  = 2016;
+            $expectedYear = 2016;
             $expectedMonth = 7;
-            $expectedDay   = 23;
+            $expectedDay = 23;
 
             $CloneDateTime->expects(self::exactly(3))
                 ->method('format')
@@ -417,18 +419,18 @@ class NavigableDateTest extends BaseUnittest
     }
 
     /**
-     * @param int  $daysAfter
+     * @param int $daysAfter
      * @param bool $resetTime
      *
      * @return void
      *
      * @dataProvider dateAfterDataProvider
      */
-    public function testDateAfter($daysAfter, $resetTime)
+    public function testDateAfter(int $daysAfter, bool $resetTime)
     {
         $DateTime = $this->_createMockedDateTime();
 
-        $OneDayInterval      = $this->_createMockedDateInterval();
+        $OneDayInterval = $this->_createMockedDateInterval();
         $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
         $DateIntervalFactory->expects(self::once())
             ->method('create')
@@ -479,7 +481,7 @@ class NavigableDateTest extends BaseUnittest
 
     public function testFormat()
     {
-        $format            = 'format';
+        $format = 'format';
         $expectedFormatted = 'lbalblab:)';
 
         $DateTime = $this->_createMockedDateTime();
@@ -488,8 +490,8 @@ class NavigableDateTest extends BaseUnittest
             ->with($format)
             ->willReturn($expectedFormatted);
 
-        $DateIntervalFactory  = $this->_createMockedDateIntervalFactory();
-        $DateTimeFactory      = $this->_createMockedDateTimeFactory();
+        $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
+        $DateTimeFactory = $this->_createMockedDateTimeFactory();
         $NavigableDateFactory = $this->_createMockedNavigableDateFactory();
 
         $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
@@ -506,8 +508,8 @@ class NavigableDateTest extends BaseUnittest
             ->method('getTimezone')
             ->willReturn($expectedTimeZone);
 
-        $DateIntervalFactory  = $this->_createMockedDateIntervalFactory();
-        $DateTimeFactory      = $this->_createMockedDateTimeFactory();
+        $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
+        $DateTimeFactory = $this->_createMockedDateTimeFactory();
         $NavigableDateFactory = $this->_createMockedNavigableDateFactory();
 
         $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
@@ -524,8 +526,8 @@ class NavigableDateTest extends BaseUnittest
             ->method('getTimestamp')
             ->willReturn($expectedTimestamp);
 
-        $DateIntervalFactory  = $this->_createMockedDateIntervalFactory();
-        $DateTimeFactory      = $this->_createMockedDateTimeFactory();
+        $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
+        $DateTimeFactory = $this->_createMockedDateTimeFactory();
         $NavigableDateFactory = $this->_createMockedNavigableDateFactory();
 
         $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
@@ -543,8 +545,8 @@ class NavigableDateTest extends BaseUnittest
             ->method('getOffset')
             ->willReturn($expectedOffset);
 
-        $DateIntervalFactory  = $this->_createMockedDateIntervalFactory();
-        $DateTimeFactory      = $this->_createMockedDateTimeFactory();
+        $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
+        $DateTimeFactory = $this->_createMockedDateTimeFactory();
         $NavigableDateFactory = $this->_createMockedNavigableDateFactory();
 
         $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
@@ -555,7 +557,7 @@ class NavigableDateTest extends BaseUnittest
     /**
      * @return array
      */
-    public function resetTimeBoolDataProvider()
+    public function resetTimeBoolDataProvider():array
     {
         return [
             [
@@ -570,7 +572,7 @@ class NavigableDateTest extends BaseUnittest
     /**
      * @return array
      */
-    public function dateAfterDataProvider()
+    public function dateAfterDataProvider():array
     {
         return [
             [
@@ -597,7 +599,7 @@ class NavigableDateTest extends BaseUnittest
     /**
      * @return array
      */
-    public function resetTimeDaysBoolDataProvider()
+    public function resetTimeDaysBoolDataProvider():array
     {
         return [
             [
@@ -618,7 +620,7 @@ class NavigableDateTest extends BaseUnittest
     /**
      * @return array
      */
-    public function resetTimeDaysMonthsBoolDataProvider()
+    public function resetTimeDaysMonthsBoolDataProvider():array
     {
         return [
             [

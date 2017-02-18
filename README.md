@@ -2,15 +2,16 @@
 
 NavigableDate is a wrapper around core php ```DateTime``` class.
 It encapsulates core class and exposes ```NavigableDateInterface``` that provides ways to 
-navigate through the dates for e.g. nextDay, previousDay, nextMonth etc in addition to basic core ```DateTime``` methods like  ```format```, ```getTimestamp```,
-```getOffset``` and ```getTimezone```.
+navigate through a date. It exposes methods like nextDay, previousDay, nextMonth etc,
+in addition to methods like  ```format```, ```getTimestamp```,```getOffset``` and ```getTimezone```.
 
 ## Basic Usage
 
-It can be instantiated with normal new operator but that needs you to manually handle the required dependencies. For which the dependencies 
-are available from ```NavigableDate\NavigableDateLocator```. However for ease ```NavigableDateLocator``` can be used to get NavigableDateFactory.
+It can be instantiated with normal new operator but that needs you to manually handle the dependencies,
+```NavigableDate\NavigableDateLocator``` can be used to get dependendent classes.
+Recommended way to get an instance is through ```NavigableDateFactory``` available in ```NavigableDateLocator```.
  
- ``` php
+ ```php
     
     $NavigableDate = NavigableDate\NavigableDateLocator::getInstance()
                     ->getNavigableDateFactory()
@@ -24,9 +25,9 @@ are available from ```NavigableDate\NavigableDateLocator```. However for ease ``
     
  ```
  
- To make it easier, ```NavigableDate\NavigableDateFacade``` is also available which facilitates instantiation.
+ Or even ```NavigableDate\NavigableDateFacade``` can be used for the instantiation.
  
- ```
+ ```php
     $NavigableDate = NavigableDate\NavigableDateFacade::create('2016-07-11');
  
  ```
@@ -37,7 +38,7 @@ are available from ```NavigableDate\NavigableDateLocator```. However for ease ``
  
  ## Then,
  
- ```
+ ```php
     $NextDay = $NavigableDate->nextDay();
     
     $NextDay->getTimestamp();
@@ -62,4 +63,4 @@ are available from ```NavigableDate\NavigableDateLocator```. However for ease ``
  
  ## Also possible to do previousMonth, nextYear with possibility to reset time, days or months available in corresponding methods. 
  
- #### NOTE: For more details, look into ```NavigableDate\NavigableDateInterface```
+ #### NOTE: For more details about methods it provides, look into ```NavigableDate\NavigableDateInterface```

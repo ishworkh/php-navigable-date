@@ -18,7 +18,7 @@ class NavigableDateServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(NavigableDateFactory::class, function(){
+        $this->app->singleton(NavigableDateFactory::class, function () {
             return NavigableDateLocator::getInstance()->getNavigableDateFactory();
         });
     }

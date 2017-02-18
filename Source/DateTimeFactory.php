@@ -4,25 +4,26 @@
  * @created 2016-12-16
  */
 
+declare(strict_types = 1);
+
 namespace NavigableDate;
 
 use DateTime;
 use DateTimeZone;
-use Unittest\DateTimeFactoryTest;
 
 /**
  * @author Ishwor Khadka <ishworkh@gmail.com>
- * @see    DateTimeFactoryTest
+ * @see    \Unittest\DateTimeFactoryTest
  */
 class DateTimeFactory
 {
     /**
-     * @param string       $time
+     * @param string $time
      * @param DateTimeZone $DateTimeZone
      *
      * @return DateTime
      */
-    public function create($time = 'now', DateTimeZone $DateTimeZone = null)
+    public function create(string $time = 'now', ?DateTimeZone $DateTimeZone = null):DateTime
     {
         return new DateTime($time, $DateTimeZone);
     }
@@ -32,7 +33,7 @@ class DateTimeFactory
      *
      * @return DateTime
      */
-    public function createFromDateTime(DateTime $DateTime)
+    public function createFromDateTime(DateTime $DateTime):DateTime
     {
         return clone $DateTime;
     }

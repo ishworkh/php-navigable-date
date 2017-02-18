@@ -4,6 +4,8 @@
  * @created 2016-12-15
  */
 
+declare(strict_types = 1);
+
 namespace NavigableDate;
 
 /**
@@ -19,7 +21,7 @@ final class NavigableDateLocator
     /**
      * @return NavigableDateLocator
      */
-    public static function getInstance()
+    public static function getInstance():NavigableDateLocator
     {
         if (null === self::$_Instance) {
             self::$_Instance = new self();
@@ -43,7 +45,7 @@ final class NavigableDateLocator
     /**
      * @return DateIntervalFactory
      */
-    public function getDateIntervalFactory()
+    public function getDateIntervalFactory():DateIntervalFactory
     {
         if (null === $this->_DateIntervalFactory) {
             $this->_DateIntervalFactory = new DateIntervalFactory();
@@ -55,9 +57,9 @@ final class NavigableDateLocator
     /**
      * @param DateIntervalFactory $DateIntervalFactory
      *
-     * @return $this
+     * @return NavigableDateLocator
      */
-    public function setDateIntervalFactory(DateIntervalFactory $DateIntervalFactory = null)
+    public function setDateIntervalFactory(?DateIntervalFactory $DateIntervalFactory = null):self
     {
         $this->_DateIntervalFactory = $DateIntervalFactory;
 
@@ -72,7 +74,7 @@ final class NavigableDateLocator
     /**
      * @return DateTimeFactory
      */
-    public function getDateTimeFactory()
+    public function getDateTimeFactory():DateTimeFactory
     {
         if (null === $this->_DateTimeFactory) {
             $this->_DateTimeFactory = new DateTimeFactory();
@@ -84,9 +86,9 @@ final class NavigableDateLocator
     /**
      * @param DateTimeFactory $DateTimeFactory
      *
-     * @return $this
+     * @return NavigableDateLocator
      */
-    public function setDateTimeFactory(DateTimeFactory $DateTimeFactory = null)
+    public function setDateTimeFactory(?DateTimeFactory $DateTimeFactory = null):self
     {
         $this->_DateTimeFactory = $DateTimeFactory;
 
@@ -101,7 +103,7 @@ final class NavigableDateLocator
     /**
      * @return NavigableDateFactory
      */
-    public function getNavigableDateFactory()
+    public function getNavigableDateFactory():NavigableDateFactory
     {
         if (null === $this->_NavigableDateFactory) {
             $this->_NavigableDateFactory = new NavigableDateFactory(
@@ -116,9 +118,9 @@ final class NavigableDateLocator
     /**
      * @param NavigableDateFactory $NavigableDateFactory
      *
-     * @return $this
+     * @return NavigableDateLocator
      */
-    public function setNavigableDateFactory(NavigableDateFactory $NavigableDateFactory = null)
+    public function setNavigableDateFactory(?NavigableDateFactory $NavigableDateFactory = null):self
     {
         $this->_NavigableDateFactory = $NavigableDateFactory;
 

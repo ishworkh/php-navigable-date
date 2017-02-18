@@ -4,15 +4,16 @@
  * @created 2016-12-15
  */
 
+declare(strict_types = 1);
+
 namespace NavigableDate;
 
 use DateTime;
 use DateTimeZone;
-use Unittest\NavigableDateFactoryTest;
 
 /**
  * @author Ishwor Khadka <ishworkh@gmail.com>
- * @see    NavigableDateFactoryTest
+ * @see    \Unittest\NavigableDateFactoryTest
  */
 class NavigableDateFactory
 {
@@ -30,7 +31,7 @@ class NavigableDateFactory
      * NavigableDateFactory constructor.
      *
      * @param DateIntervalFactory $DateIntervalFactory
-     * @param DateTimeFactory     $DateTimeFactory
+     * @param DateTimeFactory $DateTimeFactory
      */
     public function __construct(
         DateIntervalFactory $DateIntervalFactory,
@@ -38,16 +39,16 @@ class NavigableDateFactory
     )
     {
         $this->_DateIntervalFactory = $DateIntervalFactory;
-        $this->_DateTimeFactory     = $DateTimeFactory;
+        $this->_DateTimeFactory = $DateTimeFactory;
     }
 
     /**
-     * @param string            $time
+     * @param string $time
      * @param DateTimeZone|null $DateTimeZone
      *
      * @return NavigableDate
      */
-    public function create($time = 'now', DateTimeZone $DateTimeZone = null)
+    public function create(string $time = 'now', ?DateTimeZone $DateTimeZone = null):NavigableDate
     {
         return $this->_createNavigableDate($this->_DateTimeFactory->create($time, $DateTimeZone));
 
@@ -58,7 +59,7 @@ class NavigableDateFactory
      *
      * @return NavigableDate
      */
-    public function createFromDateTime(DateTime $DateTime)
+    public function createFromDateTime(DateTime $DateTime):NavigableDate
     {
         return $this->_createNavigableDate($DateTime);
     }
@@ -68,7 +69,7 @@ class NavigableDateFactory
      *
      * @return NavigableDate
      */
-    private function _createNavigableDate(DateTime $DateTime)
+    private function _createNavigableDate(DateTime $DateTime):NavigableDate
     {
         return new NavigableDate(
             $DateTime, $this->_DateIntervalFactory, $this, $this->_DateTimeFactory

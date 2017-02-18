@@ -4,6 +4,8 @@
  * @created 2016-12-15
  */
 
+declare(strict_types = 1);
+
 namespace Unittest;
 
 use NavigableDate\DateTimeFactory;
@@ -38,7 +40,7 @@ class NavigableDateFactoryTest extends BaseUnittest
     public function testCreateFromDateTime()
     {
         $DateTime = $this->_createMockedDateTime();
-        $Factory  = new NavigableDateFactory(
+        $Factory = new NavigableDateFactory(
             $this->_createMockedDateIntervalFactory(), $this->_createMockedDateTimeFactory()
         );
 
