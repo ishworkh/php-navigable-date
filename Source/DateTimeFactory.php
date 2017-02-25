@@ -37,4 +37,17 @@ class DateTimeFactory
     {
         return clone $DateTime;
     }
+
+    /**
+     * @param NavigableDateInterface $NavigableDate
+     *
+     * @return DateTime
+     */
+    public function createFromNavigableDate(NavigableDateInterface $NavigableDate):DateTime
+    {
+        $DateTime = new DateTime();
+        $DateTime->setTimezone($NavigableDate->getTimezone());
+        $DateTime->setTimestamp($NavigableDate->getTimestamp());
+        return $DateTime;
+    }
 }

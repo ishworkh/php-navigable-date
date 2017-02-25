@@ -8,12 +8,12 @@ declare(strict_types = 1);
 
 namespace NavigableDate;
 
-use DateTimeZone;
+use DateInterval;
 
 /**
  * @author Ishwor Khadka <ishworkh@gmail.com>
  */
-interface NavigableDateInterface
+interface NavigableDateInterface extends DateTimeCoreInterface
 {
     /**
      * @param bool $resetTime
@@ -30,6 +30,22 @@ interface NavigableDateInterface
      * @return NavigableDateInterface
      */
     public function previousDay(bool $resetTime = false):NavigableDateInterface;
+
+    /**
+     * @param bool $resetTime
+     * @param bool $resetDays // resets day to the first day of the week i.e. Monday
+     *
+     * @return NavigableDateInterface
+     */
+    public function nextWeek(bool $resetTime = false, bool $resetDays = false):NavigableDateInterface;
+
+    /**
+     * @param bool $resetTime
+     * @param bool $resetDays // resets day to the first day of the week i.e. Monday
+     *
+     * @return NavigableDateInterface
+     */
+    public function previousWeek(bool $resetTime = false, bool $resetDays = false):NavigableDateInterface;
 
     /**
      * @param bool $resetTime
@@ -74,27 +90,12 @@ interface NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function dateAfter(int $days, bool $resetTime = false):NavigableDateInterface;
+    public function daysAfter(int $days, bool $resetTime = false):NavigableDateInterface;
 
     /**
-     * @param string $formatSpec
+     * @param NavigableDateInterface $NavigableDate
      *
-     * @return string
+     * @return DateInterval
      */
-    public function format(string $formatSpec):string;
-
-    /**
-     * @return int
-     */
-    public function getTimestamp():int;
-
-    /**
-     * @return DateTimeZone
-     */
-    public function getTimezone():DateTimeZone;
-
-    /**
-     * @return int
-     */
-    public function getOffset():int;
+    public function getDifference(NavigableDateInterface $NavigableDate):DateInterval;
 }

@@ -22,7 +22,8 @@ class NavigableDate implements NavigableDateInterface
     private const
         _DATE_FORMAT_YEAR = 'Y',
         _DATE_FORMAT_MONTH = 'm',
-        _DATE_FORMAT_DAY = 'd';
+        _DATE_FORMAT_DAY = 'd',
+        _DATE_FORMAT_DAY_OF_WEEK = 'N';
 
     /**
      * @var DateTime
@@ -99,6 +100,40 @@ class NavigableDate implements NavigableDateInterface
         );
 
         $this->_handleResets($DateTime, $resetTime);
+
+        return $this->_createSelf($DateTime);
+    }
+
+    /**
+     * @param bool $resetTime
+     * @param bool $resetDays // resets day to the first day of the week i.e. Monday
+     *
+     * @return NavigableDateInterface
+     */
+    public function nextWeek(bool $resetTime = false, bool $resetDays = false):NavigableDateInterface
+    {
+        $DateTime = $this->_cloneDateTime($this->_DateTime);
+        $DateTime->add($this->_createAWeekInterval());
+
+        $this->_handleResets($DateTime, $resetTime);
+        $this->_handleWeeksDayReset($DateTime, $resetDays);
+
+        return $this->_createSelf($DateTime);
+    }
+
+    /**
+     * @param bool $resetTime
+     * @param bool $resetDays // resets day to the first day of the week i.e. Monday
+     *
+     * @return NavigableDateInterface
+     */
+    public function previousWeek(bool $resetTime = false, bool $resetDays = false):NavigableDateInterface
+    {
+        $DateTime = $this->_cloneDateTime($this->_DateTime);
+        $DateTime->sub($this->_createAWeekInterval());
+
+        $this->_handleResets($DateTime, $resetTime);
+        $this->_handleWeeksDayReset($DateTime, $resetDays);
 
         return $this->_createSelf($DateTime);
     }
@@ -189,7 +224,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return NavigableDateInterface
      */
-    public function dateAfter(int $days, bool $resetTime = false):NavigableDateInterface
+    public function daysAfter(int $days, bool $resetTime = false):NavigableDateInterface
     {
         $DateTime = $this
             ->_cloneDateTime($this->_DateTime);
@@ -241,6 +276,18 @@ class NavigableDate implements NavigableDateInterface
     }
 
     /**
+     * @param NavigableDateInterface $NavigableDate
+     *
+     * @return DateInterval
+     */
+    public function getDifference(NavigableDateInterface $NavigableDate):DateInterval
+    {
+        return $this->_DateTime->diff(
+            $this->_createDateTimeFromNavigableDate($NavigableDate)
+        );
+    }
+
+    /**
      * @return DateInterval
      */
     private function _createOneDayInterval():DateInterval
@@ -254,6 +301,14 @@ class NavigableDate implements NavigableDateInterface
     private function _createOneMonthInterval():DateInterval
     {
         return $this->_createDateInterval(0, 1, 0);
+    }
+
+    /**
+     * @return DateInterval
+     */
+    private function _createAWeekInterval():DateInterval
+    {
+        return $this->_createDateInterval(7, 0, 0);
     }
 
     /**
@@ -281,9 +336,29 @@ class NavigableDate implements NavigableDateInterface
         if ($resetDays || $resetMonths) {
             $DateTime->setDate(
                 $this->_getYear($DateTime),
-                $this->_getMonth($DateTime, $resetMonths),
-                $this->_getDay($DateTime, $resetDays)
+                $this->_getMonthWithPossibleResets($DateTime, $resetMonths),
+                $this->_getDayWithPossibleResets($DateTime, $resetDays)
             );
+        }
+    }
+
+    /**
+     * @param DateTime $DateTime
+     * @param bool $resetDays
+     *
+     * @return void
+     */
+    private function _handleWeeksDayReset(DateTime $DateTime, bool $resetDays = false):void
+    {
+        if ($resetDays)
+        {
+            $dayOfTheWeek = $this->_getDayOfAWeek($DateTime);
+            $daysToBeSubtracted= $dayOfTheWeek - 1;
+
+            if (0 !== $daysToBeSubtracted)
+            {
+                $DateTime->sub($this->_createDateInterval($daysToBeSubtracted, 0, 0));
+            }
         }
     }
 
@@ -303,7 +378,7 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return int
      */
-    private function _getMonth(DateTime $DateTime, bool $resetMonths):int
+    private function _getMonthWithPossibleResets(DateTime $DateTime, bool $resetMonths):int
     {
         $month = (int)$DateTime->format(self::_DATE_FORMAT_MONTH);
 
@@ -316,11 +391,21 @@ class NavigableDate implements NavigableDateInterface
      *
      * @return int
      */
-    private function _getDay(DateTime $DateTime, bool $resetDays):int
+    private function _getDayWithPossibleResets(DateTime $DateTime, bool $resetDays):int
     {
         $day = (int)$DateTime->format(self::_DATE_FORMAT_DAY);
 
         return $resetDays ? 1 : $day;
+    }
+
+    /**
+     * @param DateTime $DateTime
+     *
+     * @return int
+     */
+    private function _getDayOfAWeek(DateTime $DateTime):int
+    {
+        return (int) $DateTime->format(self::_DATE_FORMAT_DAY_OF_WEEK);
     }
 
     /**
@@ -334,9 +419,20 @@ class NavigableDate implements NavigableDateInterface
     }
 
     /**
+     * @param NavigableDateInterface $NavigableDate
+     *
+     * @return DateTime
+     */
+    private function _createDateTimeFromNavigableDate(NavigableDateInterface $NavigableDate):DateTime
+    {
+        return $this->_DateTimeFactory->createFromNavigableDate($NavigableDate);
+    }
+
+    /**
      * @param int $days
      * @param int $months
      * @param int $years
+     *
      * @return DateInterval
      */
     private function _createDateInterval(int $days, int $months, int $years):DateInterval

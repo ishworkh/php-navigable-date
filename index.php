@@ -5,12 +5,16 @@
  */
 
 require __DIR__ . '/vendor/autoload.php';
+$format = 'Y-m-d H:i:s';
 
 $NavigableDate = \NavigableDate\NavigableDateFacade::create();
+var_dump($NavigableDate->format($format));
 
-var_dump($NavigableDate->format('Y-m-d H:i:s'));
+$NextDay = $NavigableDate->nextDay(true);
+var_dump($NextDay->format($format));
 
-var_dump($NavigableDate->nextDay()->format('Y-m-d H:i:s'));
-var_dump($NavigableDate->format('Y-m-d H:i:s'));
-var_dump($NavigableDate->nextMonth()->format('Y-m-d H:i:s'));
-var_dump($NavigableDate->nextYear()->format('Y-m-d H:i:s'));
+//$NextWeek = $NavigableDate->nextWeek();
+//var_dump($NextWeek->format($format));
+
+$NWReset = $NavigableDate->nextWeek(true, true);
+var_dump($NWReset->format($format));

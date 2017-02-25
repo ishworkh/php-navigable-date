@@ -146,6 +146,149 @@ class NavigableDateTest extends BaseUnittest
      *
      * @dataProvider resetTimeDaysBoolDataProvider
      */
+    public function testNextWeek(bool $resetTime, bool $resetDays)
+    {
+        $DateTime = $this->_createMockedDateTime();
+
+        $OneWeekInterval = $this->_createMockedDateInterval();
+        $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
+
+        $CloneDateTime = $this->_createMockedDateTime();
+        $CloneDateTime->expects(self::once())
+            ->method('add')
+            ->with($OneWeekInterval);
+
+        $setTimeExpectedTimes = self::never();
+        if ($resetTime) {
+            $setTimeExpectedTimes = self::once();
+        }
+        $CloneDateTime->expects($setTimeExpectedTimes)
+            ->method('setTime')
+            ->with(0, 0, 0);
+
+        if ($resetDays) {
+            $expectedDayOfWeek = 3;
+
+            $ToBeSubstractedIntervalToResetDays = $this->_createMockedDateInterval();
+            $DateIntervalFactory->expects(self::exactly(2))
+                ->method('create')
+                ->withConsecutive([7, 0, 0], [$expectedDayOfWeek - 1 , 0, 0])
+                ->willReturnOnConsecutiveCalls($OneWeekInterval, $ToBeSubstractedIntervalToResetDays);
+
+            $CloneDateTime->expects(self::once())
+                ->method('format')
+                ->with('N')
+                ->willReturn(strval($expectedDayOfWeek));
+
+            $CloneDateTime->expects(self::once())
+                ->method('sub')
+                ->with($ToBeSubstractedIntervalToResetDays);
+
+        } else {
+            $DateIntervalFactory->expects(self::once())
+                ->method('create')
+                ->with(7, 0, 0)
+                ->willReturn($OneWeekInterval);
+        }
+
+        $DateTimeFactory = $this->_createMockedDateTimeFactory();
+        $DateTimeFactory->expects(self::once())
+            ->method('createFromDateTime')
+            ->with($DateTime)
+            ->willReturn($CloneDateTime);
+
+        $NextWeekNavigableDate = $this->_createMockedNavigableDate();
+        $NavigableDateFactory = $this->_createMockedNavigableDateFactory();
+        $NavigableDateFactory->expects(self::once())
+            ->method('createFromDateTime')
+            ->with($CloneDateTime)
+            ->willReturn($NextWeekNavigableDate);
+
+        $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
+        self::assertSame($NextWeekNavigableDate, $NavigableDate->nextWeek($resetTime, $resetDays));
+    }
+
+    /**
+     * @param bool $resetTime
+     * @param bool $resetDays
+     *
+     * @return void
+     *
+     * @dataProvider resetTimeDaysBoolDataProvider
+     */
+    public function testPreviousWeek(bool $resetTime, bool $resetDays)
+    {
+        $DateTime = $this->_createMockedDateTime();
+
+        $OneWeekInterval = $this->_createMockedDateInterval();
+        $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
+
+        $CloneDateTime = $this->_createMockedDateTime();
+        $CloneDateTime->expects(self::never())
+            ->method('add');
+
+        $setTimeExpectedTimes = self::never();
+        if ($resetTime) {
+            $setTimeExpectedTimes = self::once();
+        }
+        $CloneDateTime->expects($setTimeExpectedTimes)
+            ->method('setTime')
+            ->with(0, 0, 0);
+
+        if ($resetDays) {
+            $expectedDayOfWeek = 3;
+
+            $ToBeSubstractedIntervalToResetDays = $this->_createMockedDateInterval();
+            $DateIntervalFactory->expects(self::exactly(2))
+                ->method('create')
+                ->withConsecutive([7, 0, 0], [$expectedDayOfWeek - 1 , 0, 0])
+                ->willReturnOnConsecutiveCalls($OneWeekInterval, $ToBeSubstractedIntervalToResetDays);
+
+            $CloneDateTime->expects(self::once())
+                ->method('format')
+                ->with('N')
+                ->willReturn(strval($expectedDayOfWeek));
+
+            $CloneDateTime->expects(self::exactly(2))
+                ->method('sub')
+                ->withConsecutive([$OneWeekInterval], [$ToBeSubstractedIntervalToResetDays]);
+
+        } else {
+            $CloneDateTime->expects(self::once())
+                ->method('sub')
+                ->with($OneWeekInterval);
+
+            $DateIntervalFactory->expects(self::once())
+                ->method('create')
+                ->with(7, 0, 0)
+                ->willReturn($OneWeekInterval);
+        }
+
+        $DateTimeFactory = $this->_createMockedDateTimeFactory();
+        $DateTimeFactory->expects(self::once())
+            ->method('createFromDateTime')
+            ->with($DateTime)
+            ->willReturn($CloneDateTime);
+
+        $PreviousWeekNavigableDate = $this->_createMockedNavigableDate();
+        $NavigableDateFactory = $this->_createMockedNavigableDateFactory();
+        $NavigableDateFactory->expects(self::once())
+            ->method('createFromDateTime')
+            ->with($CloneDateTime)
+            ->willReturn($PreviousWeekNavigableDate);
+
+        $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
+        self::assertSame($PreviousWeekNavigableDate, $NavigableDate->previousWeek($resetTime, $resetDays));
+    }
+
+    /**
+     * @param bool $resetTime
+     * @param bool $resetDays
+     *
+     * @return void
+     *
+     * @dataProvider resetTimeDaysBoolDataProvider
+     */
     public function testNextMonth(bool $resetTime, bool $resetDays)
     {
         $DateTime = $this->_createMockedDateTime();
@@ -476,7 +619,7 @@ class NavigableDateTest extends BaseUnittest
             ->willReturn($NextDayNavigableDate);
 
         $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
-        self::assertSame($NextDayNavigableDate, $NavigableDate->dateAfter($daysAfter, $resetTime));
+        self::assertSame($NextDayNavigableDate, $NavigableDate->daysAfter($daysAfter, $resetTime));
     }
 
     public function testFormat()
@@ -552,6 +695,33 @@ class NavigableDateTest extends BaseUnittest
         $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
 
         self::assertSame($expectedOffset, $NavigableDate->getOffset());
+    }
+
+    public function testGetDifference()
+    {
+        $ToBeDiffedNavigableDate = $this->_createMockedNavigableDate();
+        $DiffDateTime = $this->_createMockedDateTime();
+
+        $DateTimeFactory = $this->_createMockedDateTimeFactory();
+        $DateTimeFactory->expects(self::once())
+            ->method('createFromNavigableDate')
+            ->with($ToBeDiffedNavigableDate)
+            ->willReturn($DiffDateTime);
+
+        $ExpectedDateInterval = $this->_createMockedDateInterval();
+
+        $DateTime = $this->_createMockedDateTime();
+        $DateTime->expects(self::once())
+            ->method('diff')
+            ->with($DiffDateTime)
+            ->willReturn($ExpectedDateInterval);
+
+        $DateIntervalFactory = $this->_createMockedDateIntervalFactory();
+        $NavigableDateFactory = $this->_createMockedNavigableDateFactory();
+
+        $NavigableDate = new NavigableDate($DateTime, $DateIntervalFactory, $NavigableDateFactory, $DateTimeFactory);
+
+        self::assertSame($ExpectedDateInterval, $NavigableDate->getDifference($ToBeDiffedNavigableDate));
     }
 
     /**

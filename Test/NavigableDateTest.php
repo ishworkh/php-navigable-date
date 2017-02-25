@@ -20,6 +20,8 @@ require_once __DIR__ . '/BaseTest.php';
  */
 class NavigableDateTest extends BaseTest
 {
+    private const _TEST_DATE_FORMAT = 'Y-m-d H:i:s';
+
     /**
      * @param string $date
      * @param string $expectedNextDayDate
@@ -31,9 +33,9 @@ class NavigableDateTest extends BaseTest
      */
     public function testNextDay(string $date, string $expectedNextDayDate, bool $resetTime)
     {
-        $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
+        $NavigableDate = $this->_createNavigableDate($date);
 
-        self::assertSame($expectedNextDayDate, $NavigableDate->nextDay($resetTime)->format('Y-m-d H:i:s'));
+        self::assertSame($expectedNextDayDate, $NavigableDate->nextDay($resetTime)->format(self::_TEST_DATE_FORMAT));
     }
 
     /**
@@ -68,9 +70,9 @@ class NavigableDateTest extends BaseTest
      */
     public function testPreviousDay(string $date, string $expectedPreviousDayDate, bool $resetTime)
     {
-        $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
+        $NavigableDate = $this->_createNavigableDate($date);
 
-        self::assertSame($expectedPreviousDayDate, $NavigableDate->previousDay($resetTime)->format('Y-m-d H:i:s'));
+        self::assertSame($expectedPreviousDayDate, $NavigableDate->previousDay($resetTime)->format(self::_TEST_DATE_FORMAT));
     }
 
     /**
@@ -96,6 +98,102 @@ class NavigableDateTest extends BaseTest
 
     /**
      * @param string $date
+     * @param string $expectedNextWeekDate
+     * @param bool $resetTime
+     * @param bool $resetDays
+     *
+     * @dataProvider nextWeekDataProvider
+     */
+    public function testNextWeek(string $date, string $expectedNextWeekDate, bool $resetTime, bool $resetDays)
+    {
+        $NavigableDate = $this->_createNavigableDate($date);
+
+        self::assertSame($expectedNextWeekDate, $NavigableDate->nextWeek($resetTime, $resetDays)->format(self::_TEST_DATE_FORMAT));
+    }
+
+    /**
+     * @return array
+     */
+    public function nextWeekDataProvider():array
+    {
+        return [
+            [
+                '2017-02-24 11:00:00', '2017-03-03 11:00:00', false, false,
+            ],
+            [
+                '2017-03-04 11:00:00', '2017-03-11 00:00:00', true, false,
+            ],
+            [
+                '2017-03-31 11:00:00', '2017-04-07 11:00:00', false, false,
+            ],
+            [
+                '2016-12-31 11:00:00', '2017-01-07 00:00:00', true, false,
+            ],
+            [
+                '2017-02-24 11:00:00', '2017-02-27 11:00:00', false, true,
+            ],
+            [
+                '2017-03-04 11:00:00', '2017-03-06 00:00:00', true, true,
+            ],
+            [
+                '2017-03-31 11:00:00', '2017-04-03 11:00:00', false, true,
+            ],
+            [
+                '2016-12-31 11:00:00', '2017-01-02 00:00:00', true, true,
+            ],
+        ];
+    }
+
+    /**
+     * @param string $date
+     * @param string $expectedPreviousWeekDate
+     * @param bool $resetTime
+     * @param bool $resetDays
+     *
+     * @dataProvider previousWeekDataProvider
+     */
+    public function testPreviousWeek(string $date, string $expectedPreviousWeekDate, bool $resetTime, bool $resetDays)
+    {
+        $NavigableDate = $this->_createNavigableDate($date);
+
+        self::assertSame($expectedPreviousWeekDate, $NavigableDate->previousWeek($resetTime, $resetDays)->format(self::_TEST_DATE_FORMAT));
+    }
+
+    /**
+     * @return array
+     */
+    public function previousWeekDataProvider():array
+    {
+        return [
+            [
+                '2017-02-24 11:00:00', '2017-02-17 11:00:00', false, false,
+            ],
+            [
+                '2017-03-04 11:00:00', '2017-02-25 00:00:00', true, false,
+            ],
+            [
+                '2017-03-31 11:00:00', '2017-03-24 11:00:00', false, false,
+            ],
+            [
+                '2017-01-01 11:00:00', '2016-12-25 00:00:00', true, false,
+            ],
+            [
+                '2017-02-24 11:00:00', '2017-02-13 11:00:00', false, true,
+            ],
+            [
+                '2017-03-04 11:00:00', '2017-02-20 00:00:00', true, true,
+            ],
+            [
+                '2017-04-01 11:00:00', '2017-03-20 11:00:00', false, true,
+            ],
+            [
+                '2017-01-01 11:00:00', '2016-12-19 00:00:00', true, true,
+            ],
+        ];
+    }
+
+    /**
+     * @param string $date
      * @param string $expectedNextMonthDate
      * @param bool $resetTime
      * @param bool $resetDays
@@ -106,10 +204,10 @@ class NavigableDateTest extends BaseTest
      */
     public function testNextMonth(string $date, string $expectedNextMonthDate, bool $resetTime, bool $resetDays)
     {
-        $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
+        $NavigableDate = $this->_createNavigableDate($date);
 
         self::assertSame(
-            $expectedNextMonthDate, $NavigableDate->nextMonth($resetTime, $resetDays)->format('Y-m-d H:i:s')
+            $expectedNextMonthDate, $NavigableDate->nextMonth($resetTime, $resetDays)->format(self::_TEST_DATE_FORMAT)
         );
     }
 
@@ -158,10 +256,10 @@ class NavigableDateTest extends BaseTest
      */
     public function testPreviousMonth(string $date, string $expectedPreviousMonthDate, bool $resetTime, bool $resetDays)
     {
-        $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
+        $NavigableDate = $this->_createNavigableDate($date);
 
         self::assertSame(
-            $expectedPreviousMonthDate, $NavigableDate->previousMonth($resetTime, $resetDays)->format('Y-m-d H:i:s')
+            $expectedPreviousMonthDate, $NavigableDate->previousMonth($resetTime, $resetDays)->format(self::_TEST_DATE_FORMAT)
         );
     }
 
@@ -211,11 +309,11 @@ class NavigableDateTest extends BaseTest
      */
     public function testNextYear(string $date, string $expectedNextMonthDate, bool $resetTime, bool $resetDays, bool $resetMonths)
     {
-        $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
+        $NavigableDate = $this->_createNavigableDate($date);
 
         self::assertSame(
             $expectedNextMonthDate,
-            $NavigableDate->nextYear($resetTime, $resetDays, $resetMonths)->format('Y-m-d H:i:s')
+            $NavigableDate->nextYear($resetTime, $resetDays, $resetMonths)->format(self::_TEST_DATE_FORMAT)
         );
     }
 
@@ -289,11 +387,11 @@ class NavigableDateTest extends BaseTest
      */
     public function testPreviousYear(string $date, string $expectedNextMonthDate, bool $resetTime, bool $resetDays, bool $resetMonths)
     {
-        $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
+        $NavigableDate = $this->_createNavigableDate($date);
 
         self::assertSame(
             $expectedNextMonthDate,
-            $NavigableDate->previousYear($resetTime, $resetDays, $resetMonths)->format('Y-m-d H:i:s')
+            $NavigableDate->previousYear($resetTime, $resetDays, $resetMonths)->format(self::_TEST_DATE_FORMAT)
         );
     }
 
@@ -386,7 +484,7 @@ class NavigableDateTest extends BaseTest
                 'h:i:s',
             ],
             [
-                'Y-m-d H:i:s',
+                self::_TEST_DATE_FORMAT,
             ],
         ];
     }
@@ -413,5 +511,27 @@ class NavigableDateTest extends BaseTest
         $NavigableDate = NavigableDateLocator::getInstance()->getNavigableDateFactory()->createFromDateTime($DateTime);
 
         self::assertSame($DateTime->getOffset(), $NavigableDate->getOffset());
+    }
+
+    public function testGetDifference()
+    {
+        $date1 = '2017-02-24 00:00:00';
+        $Date1 = new DateTime($date1);
+        $NavigableDate1 = $this->_createNavigableDate($date1);
+
+        $date2 = '2017-02-15 12:00:00';
+        $Date2 = new DateTime($date2);
+        $NavigableDate2 = $this->_createNavigableDate($date2);
+
+        self::assertSame($Date2->diff($Date1)->format('%Y%m%d %h%i%s'), $NavigableDate2->getDifference($NavigableDate1)->format('%Y%m%d %h%i%s'));
+    }
+
+    /**
+     * @param string $date
+     * @return NavigableDate
+     */
+    private function _createNavigableDate(string $date):NavigableDate
+    {
+        return NavigableDateLocator::getInstance()->getNavigableDateFactory()->create($date);
     }
 }
